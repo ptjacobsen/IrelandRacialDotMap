@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ireland Racial Dot Map - PTJACOBSEN</title>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+  <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <style type="text/css">
+    #basemapslidercontainer {
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    #basemapslider{
+      font-size:62.5%;
+      margin: 14px;
+      height: 125px;
+      width:7px;
+    }
+
+    body,html {
+        height: 100%;
+        margin: 0px;
+    }
+
+  
+    #map{
+       height: 100%;
+    }
+    
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }   
+    .legend i {
+        width: 15px;
+        height: 15px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+        border-radius:50%;
+    }
+    
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+  <script>
+    $(document).ready(function () {
+
+
+    var map = L.map('map',{minZoom: 7,maxZoom: 14 }).setView([53.4033794403, -8.21670079231], 8);
+
+
+	var Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
+	    attribution: 'Base layer tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	    subdomains: 'abcd',
+	    minZoom: 7,
+	    maxZoom: 14,
+	    ext: 'png'
+    }).addTo(map);
+
+    var mytile =L.tileLayer('{z}/{x}/{y}.png', {
+    maxZoom: 14,
+    tms: false,
+    attribution: '<a href="https://www.github.com/ptjacobsen">Map Details</a>'
+    }).addTo(map);
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            legend_elements = [['#0e9404', 'White Irish'],
+                               ['#0053d1', 'Other White'],
+                               ['#e10003', 'Asian'],
+                               ['#7000e1', 'Black'],
+                               ['#eca100', 'Irish Traveller'],
+                               ['#845300', 'Other']]
+
+        div.innerHTML = ''
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < legend_elements.length; i++) {
+            div.innerHTML += '<i style="background:' + legend_elements[i][0] + '"></i> ' + legend_elements[i][1]  + '<br>';
+        }
+        
+        div.innerHTML += '<div id="dotref"></div>';
+        return div; 
+    };
+
+    legend.addTo(map);
+    
+    function updatePperD() {
+                var z = map.getZoom();
+        if (z >=12) {
+            document.getElementById('dotref').innerHTML = '1 dot = 1 person';
+        } else if (z < 12 & z >= 10) {
+            document.getElementById('dotref').innerHTML = '1 dot = 3 people';
+        } else if (z < 10) {
+            document.getElementById('dotref').innerHTML = '1 dot = 10 people';
+        }
+    }
+    
+    updatePperD();
+    
+    map.on("zoomend", function(){
+        updatePperD();
+    });
+    
+    })
+    
+
+
+  </script>
+</head>
+<body>
+  <div id="map">
+    <div id="basemapslidercontainer">
+      <div id="basemapslider">
+    </div>
+  </div>
+  </div>
+</body>
+</html>
