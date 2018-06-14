@@ -62,28 +62,25 @@
   <script>
     $(document).ready(function () {
 
-
     var map = L.map('map',{minZoom: 7,maxZoom: 14 }).setView([53.4033794403, -8.21670079231], 8);
 
-
 	var Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
-	    attribution: 'Base layer tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-	    subdomains: 'abcd',
-	    minZoom: 7,
-	    maxZoom: 14,
-	    ext: 'png'
+		attribution: 'Base layer tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+		subdomains: 'abcd',
+		minZoom: 7,
+		maxZoom: 14,
+		ext: 'png'
     }).addTo(map);
 
     var mytile =L.tileLayer('https://ptjacobsen.com/IrelandRacialDotMap/{z}/{x}/{y}.png', {
-    maxZoom: 14,
-    tms: false,
-    attribution: '<a href="https://www.github.com/ptjacobsen">Map Details</a>'
+		maxZoom: 14,
+		tms: false,
+		attribution: '<a href="https://www.github.com/ptjacobsen">Map Details</a>'
     }).addTo(map);
 
     var legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
-
         var div = L.DomUtil.create('div', 'info legend'),
             legend_elements = [['#0e9404', 'White Irish'],
                                ['#0053d1', 'Other White'],
@@ -91,7 +88,6 @@
                                ['#7000e1', 'Black'],
                                ['#eca100', 'Irish Traveller'],
                                ['#845300', 'Other']]
-
         div.innerHTML = ''
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < legend_elements.length; i++) {
@@ -105,7 +101,7 @@
     legend.addTo(map);
     
     function updatePperD() {
-                var z = map.getZoom();
+        var z = map.getZoom();
         if (z >=12) {
             document.getElementById('dotref').innerHTML = '1 dot = 1 person';
         } else if (z < 12 & z >= 10) {
@@ -122,8 +118,6 @@
     });
     
     })
-    
-
 
   </script>
 </head>
